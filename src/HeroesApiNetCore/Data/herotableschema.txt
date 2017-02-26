@@ -1,0 +1,8 @@
+                         Table "public.hero1table"
+ Column |  Type   |                        Modifiers
+--------+---------+---------------------------------------------------------
+ id     | integer | not null default nextval('hero1table_id_seq'::regclass)
+ name   | text    | not null
+ active | integer |
+Indexes:
+    "hero1table_pkey" PRIMARY KEY, btree (id)

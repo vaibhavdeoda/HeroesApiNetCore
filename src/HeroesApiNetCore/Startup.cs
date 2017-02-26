@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using WebApplication1.Data;
-
+using Microsoft.EntityFrameworkCore;
 namespace WebApplication1
 {
     public class Startup
@@ -41,7 +37,11 @@ namespace WebApplication1
             services.AddMvc();
 
             //register application services
-            services.AddSingleton<IPersistHero, InMemoryPersistHero>();
+            services.AddSingleton<IPersistHero, PostgresPersistHero>();
+            
+            services.AddDbContext<HeroDbContext>(options => {
+                options.UseNpgsql("User ID=test;Password=test;Host=localhost;Port=5432;Database=heroes;Pooling=true;");
+             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
@@ -55,6 +55,7 @@ namespace WebApplication1
             app.UseApplicationInsightsExceptionTelemetry();
 
             app.UseMvc();
+
         }
     }
 }
